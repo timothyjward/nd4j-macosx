@@ -1,0 +1,143 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>eu.brain.iot</groupId>
+  <artifactId>nd4j-test</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  
+  <repositories>
+    <!-- DeepLearning4J snapshots -->
+    <repository>
+      <id>sonatype-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.nd4j</groupId>
+      <artifactId>nd4j-native-platform</artifactId>
+      <!-- This version works -->
+      <version>1.0.0-beta4</version>
+      
+      <!-- 
+        This version fails with:
+        
+        dyld: lazy symbol binding failed: Symbol not found: ___emutls_get_address
+          Referenced from: /Users/timothyjward/.javacpp/cache/nd4j-native-1.0.0-beta5-macosx-x86_64.jar/org/nd4j/nativeblas/macosx-x86_64/libnd4jcpu.dylib
+          Expected in: /usr/lib/libSystem.B.dylib
+
+        dyld: Symbol not found: ___emutls_get_address
+          Referenced from: /Users/timothyjward/.javacpp/cache/nd4j-native-1.0.0-beta5-macosx-x86_64.jar/org/nd4j/nativeblas/macosx-x86_64/libnd4jcpu.dylib
+          Expected in: /usr/lib/libSystem.B.dylib
+      <version>1.0.0-beta5</version>
+      -->
+      
+      <!-- This version fails with:
+        java.lang.ExceptionInInitializerError
+          at org.nd4j.linalg.cpu.nativecpu.ops.NativeOpExecutioner.<init>(NativeOpExecutioner.java:91)
+          at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+          at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+          at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+          at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+          at java.base/java.lang.Class.newInstance(Class.java:584)
+          at org.nd4j.linalg.factory.Nd4j.initWithBackend(Nd4j.java:5176)
+          at org.nd4j.linalg.factory.Nd4j.initContext(Nd4j.java:5090)
+          at org.nd4j.linalg.factory.Nd4j.<clinit>(Nd4j.java:176)
+          at eu.brain.iot.nd4j.test.NDArrayCreationTest.before(NDArrayCreationTest.java:44)
+          at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+          at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+          at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+          at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+          at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+          at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+          at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+          at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:24)
+          at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+          at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+          at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+          at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+          at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+          at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+          at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+          at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+          at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+          at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+          at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:89)
+          at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:41)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:541)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:763)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:463)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:209)
+Caused by: java.lang.RuntimeException: ND4J is probably missing dependencies. For more information, please refer to: http://nd4j.org/getstarted.html
+          at org.nd4j.nativeblas.NativeOpsHolder.<init>(NativeOpsHolder.java:106)
+          at org.nd4j.nativeblas.NativeOpsHolder.<clinit>(NativeOpsHolder.java:34)
+          ... 34 more
+Caused by: java.lang.UnsatisfiedLinkError: no jnind4jcpu in java.library.path: [/Users/timothyjward/Library/Java/Extensions, /Library/Java/Extensions, /Network/Library/Java/Extensions, /System/Library/Java/Extensions, /usr/lib/java, .]
+          at java.base/java.lang.ClassLoader.loadLibrary(ClassLoader.java:2660)
+          at java.base/java.lang.Runtime.loadLibrary0(Runtime.java:829)
+          at java.base/java.lang.System.loadLibrary(System.java:1867)
+          at org.bytedeco.javacpp.Loader.loadLibrary(Loader.java:1487)
+          at org.bytedeco.javacpp.Loader.load(Loader.java:1190)
+          at org.bytedeco.javacpp.Loader.load(Loader.java:1040)
+          at org.nd4j.nativeblas.Nd4jCpu.<clinit>(Nd4jCpu.java:10)
+          at java.base/java.lang.Class.forName0(Native Method)
+          at java.base/java.lang.Class.forName(Class.java:315)
+          at org.nd4j.nativeblas.NativeOpsHolder.<init>(NativeOpsHolder.java:84)
+          ... 35 more
+Caused by: java.lang.UnsatisfiedLinkError: /Users/timothyjward/.javacpp/cache/nd4j-native-1.0.0-SNAPSHOT-macosx-x86_64.jar/org/nd4j/nativeblas/macosx-x86_64/libjnind4jcpu.dylib: dlopen(/Users/timothyjward/.javacpp/cache/nd4j-native-1.0.0-SNAPSHOT-macosx-x86_64.jar/org/nd4j/nativeblas/macosx-x86_64/libjnind4jcpu.dylib, 1): Library not loaded: @rpath/libopenblas.dylib
+  Referenced from: /Users/timothyjward/.javacpp/cache/nd4j-native-1.0.0-SNAPSHOT-macosx-x86_64.jar/org/nd4j/nativeblas/macosx-x86_64/./libnd4jcpu.dylib
+  Reason: image not found
+          at java.base/java.lang.ClassLoader$NativeLibrary.load0(Native Method)
+          at java.base/java.lang.ClassLoader$NativeLibrary.load(ClassLoader.java:2430)
+          at java.base/java.lang.ClassLoader$NativeLibrary.loadLibrary(ClassLoader.java:2487)
+          at java.base/java.lang.ClassLoader.loadLibrary0(ClassLoader.java:2684)
+          at java.base/java.lang.ClassLoader.loadLibrary(ClassLoader.java:2617)
+          at java.base/java.lang.Runtime.load0(Runtime.java:767)
+          at java.base/java.lang.System.load(System.java:1831)
+          at org.bytedeco.javacpp.Loader.loadLibrary(Loader.java:1461)
+          ... 41 more
+
+java.lang.NoClassDefFoundError: Could not initialize class org.nd4j.linalg.factory.Nd4j
+          at eu.brain.iot.nd4j.test.NDArrayCreationTest.after(NDArrayCreationTest.java:55)
+          at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+          at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+          at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+          at java.base/java.lang.reflect.Method.invoke(Method.java:566)
+          at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:50)
+          at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+          at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:47)
+          at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:33)
+          at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:325)
+          at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:78)
+          at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:57)
+          at org.junit.runners.ParentRunner$3.run(ParentRunner.java:290)
+          at org.junit.runners.ParentRunner$1.schedule(ParentRunner.java:71)
+          at org.junit.runners.ParentRunner.runChildren(ParentRunner.java:288)
+          at org.junit.runners.ParentRunner.access$000(ParentRunner.java:58)
+          at org.junit.runners.ParentRunner$2.evaluate(ParentRunner.java:268)
+          at org.junit.runners.ParentRunner.run(ParentRunner.java:363)
+          at org.eclipse.jdt.internal.junit4.runner.JUnit4TestReference.run(JUnit4TestReference.java:89)
+          at org.eclipse.jdt.internal.junit.runner.TestExecution.run(TestExecution.java:41)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:541)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.runTests(RemoteTestRunner.java:763)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.run(RemoteTestRunner.java:463)
+          at org.eclipse.jdt.internal.junit.runner.RemoteTestRunner.main(RemoteTestRunner.java:209)
+
+      <version>1.0.0-SNAPSHOT</version>
+       -->
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+</project>
