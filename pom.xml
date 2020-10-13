@@ -135,7 +135,7 @@ java.lang.NoClassDefFoundError: Could not initialize class org.nd4j.linalg.facto
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
